@@ -1,6 +1,8 @@
 package com.eekhaut.kristof.coordinatetransform;
 
 import com.eekhaut.kristof.coordinatetransform.algorithm.GeographicalToFlatCoordinateTransformation;
+import com.eekhaut.kristof.coordinatetransform.algorithm.GeographicalToGeocentricCoordinateTransformation;
+import com.eekhaut.kristof.coordinatetransform.util.DegreeUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,10 +85,9 @@ public class WGS84ToLambert72TransformerTest {
     }
 
     @Test
-    @Ignore
     public void testInverse() {
 
-        GeographicalToFlatCoordinateTransformation.Result result = transformer.transformInverse(x, y);
+        GeographicalToGeocentricCoordinateTransformation.Result result = transformer.transformInverse(x, y);
 
         double actualLatitude = result.getLatitude();
         double actualLongitude = result.getLongitude();

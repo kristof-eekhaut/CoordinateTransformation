@@ -30,11 +30,26 @@ public class SevenParameterTransformation {
      * @param z in meters
      * @return Result
      */
-    public Result transformation(double x, double y, double z) {
+    public Result directTransformation(double x, double y, double z) {
 
         double tx = dx + (1 + s) * (  (1 * x) +  (rz * y) + (-ry * z));
         double ty = dy + (1 + s) * ((-rz * x) +   (1 * y) +  (rx * z));
         double tz = dz + (1 + s) * ( (ry * x) + (-rx * y) +   (1 * z));
+
+        return new Result(tx, ty, tz);
+    }
+
+    /**
+     * @param x in meters
+     * @param y in meters
+     * @param z in meters
+     * @return Result
+     */
+    public Result inverseTransformation(double x, double y, double z) {
+
+        double tx = -dx + (1 / (1 + s)) * (  (1 * x) + (-rz * y) +  (ry * z));
+        double ty = -dy + (1 / (1 + s)) * ( (rz * x) +   (1 * y) + (-rx * z));
+        double tz = -dz + (1 / (1 + s)) * ((-ry * x) +  (rx * y) +   (1 * z));
 
         return new Result(tx, ty, tz);
     }

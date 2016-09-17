@@ -3,7 +3,6 @@ package com.eekhaut.kristof.coordinatetransform;
 import com.eekhaut.kristof.coordinatetransform.algorithm.GeographicalToFlatCoordinateTransformation;
 import com.eekhaut.kristof.coordinatetransform.algorithm.GeographicalToGeocentricCoordinateTransformation;
 import com.eekhaut.kristof.coordinatetransform.algorithm.SevenParameterTransformation;
-import com.eekhaut.kristof.coordinatetransform.util.DegreeUtils;
 
 import static com.eekhaut.kristof.coordinatetransform.util.DegreeUtils.degreesToRadians;
 import static java.lang.Math.toRadians;
@@ -11,6 +10,7 @@ import static java.lang.Math.toRadians;
 public class WGS84ToLambert72Transformer {
 
     private static final int PHY_CALCULATION_PRECISION_DEPTH = 10;
+    private static final double HEIGHT = 60D;  // Just providing an estimated avg hight
 
     private static final long a = 6378388L;
     private static final double f = 1.0 / 297.0;
@@ -38,9 +38,6 @@ public class WGS84ToLambert72Transformer {
     private GeographicalToGeocentricCoordinateTransformation lambert72GeocentricTransformation = new GeographicalToGeocentricCoordinateTransformation(a, f);
     private GeographicalToFlatCoordinateTransformation lambert72FlatTransformation = new GeographicalToFlatCoordinateTransformation(a, f, phi1, phi2, phi0, lambda0, x0, y0, PHY_CALCULATION_PRECISION_DEPTH);
 
-    double testHeight = 60D;
-
-
     /**
      *
      * @param latitude Latitude in degrees of the WGS84 coordinate (e.g.: 50.835119)
@@ -51,15 +48,19 @@ public class WGS84ToLambert72Transformer {
         double phi = toRadians(latitude);
         double lambda = toRadians(longitude);
 
-        GeographicalToGeocentricCoordinateTransformation.Result wgsGeocentricResult = wgs84GeocentricTransformation.directTransformation(phi, lambda, testHeight);
-        SevenParameterTransformation.Result lambert72GeocentricResult = sevenParameterTransformation.transformation(wgsGeocentricResult.getX(), wgsGeocentricResult.getY(), wgsGeocentricResult.getZ());
+        GeographicalToGeocentricCoordinateTransformation.Result wgsGeocentricResult = wgs84GeocentricTransformation.directTransformation(phi, lambda, HEIGHT);
+        SevenParameterTransformation.Result lambert72GeocentricResult = sevenParameterTransformation.directTransformation(wgsGeocentricResult.getX(), wgsGeocentricResult.getY(), wgsGeocentricResult.getZ());
         GeographicalToGeocentricCoordinateTransformation.Result lambert72GeographicalResult = lambert72GeocentricTransformation.inverseTransformation(lambert72GeocentricResult.getX(), lambert72GeocentricResult.getY(), lambert72GeocentricResult.getZ());
 
         return lambert72FlatTransformation.directTransformation(lambert72GeographicalResult.getPhi(), lambert72GeographicalResult.getLambda());
     }
 
-    public GeographicalToFlatCoordinateTransformation.Result transformInverse(double x, double y) {
+    public GeographicalToGeocentricCoordinateTransformation.Result transformInverse(double x, double y) {
 
-        return null;
+        GeographicalToFlatCoordinateTransformation.Result lambert72GeographicalResult = lambert72FlatTransformation.inverseTransformation(x, y);
+        GeographicalToGeocentricCoordinateTransformation.Result lambert72GeocentricResult = lambert72GeocentricTransformation.directTransformation(lambert72GeographicalResult.getPhi(), lambert72GeographicalResult.getLambda(), HEIGHT);
+        SevenParameterTransformation.Result wgsGeocentricResult = sevenParameterTransformation.inverseTransformation(lambert72GeocentricResult.getX(), lambert72GeocentricResult.getY(), lambert72GeocentricResult.getZ());
+
+        return wgs84GeocentricTransformation.inverseTransformation(wgsGeocentricResult.getX(), wgsGeocentricResult.getY(), wgsGeocentricResult.getZ());
     }
 }
