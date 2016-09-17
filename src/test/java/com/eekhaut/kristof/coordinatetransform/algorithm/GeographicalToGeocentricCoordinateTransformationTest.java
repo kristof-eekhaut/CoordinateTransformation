@@ -24,7 +24,7 @@ public class GeographicalToGeocentricCoordinateTransformationTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {"Example", toDegrees(50, 51, 48, 752), toDegrees(3, 49, 8, 255), 76549.0, 4025100.583, 268684.735, 4924132.152},
+                {"Example", toDegrees(50, 51, 48, 752), toDegrees(3, 49, 8, 255), 76.549, 4025100.583, 268684.735, 4924132.152},
         });
     }
 
