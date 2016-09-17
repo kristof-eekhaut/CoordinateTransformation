@@ -6,7 +6,6 @@ public class GeographicalToGeocentricCoordinateTransformation {
     private final double f;
 
     private double eSquared;
-    private double e;
 
     public GeographicalToGeocentricCoordinateTransformation(double a, double f) {
         this.a = a;
@@ -17,7 +16,6 @@ public class GeographicalToGeocentricCoordinateTransformation {
 
     private void initCommonValues() {
         eSquared = 2.0 * f - Math.pow(f, 2);
-        e = Math.sqrt(eSquared);
     }
 
     /**

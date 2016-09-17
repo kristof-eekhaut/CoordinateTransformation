@@ -9,7 +9,7 @@ public class WGS84ToLambert2008Transformer {
 
     private static final int PHY_CALCULATION_PRECISION_DEPTH = 10;
 
-    private static final long a = 6378137L;
+    private static final double a = 6378137D;
     private static final double f = 1.0 / 298.257222101;
 
     private static final double phi0 = degreesToRadians(50, 47, 52, 134); // ϕ0
@@ -17,10 +17,10 @@ public class WGS84ToLambert2008Transformer {
     private static final double phi2 = degreesToRadians(51, 10, 0, 0); // ϕ2
 
     private static final double lambda0 = degreesToRadians(4, 21, 33, 177); // λ0
-    private static final long x0 = 649328L;
-    private static final long y0 = 665262L;
+    private static final double x0 = 649328D;
+    private static final double y0 = 665262D;
 
-    public GeographicalToFlatCoordinateTransformation transformation = new GeographicalToFlatCoordinateTransformation(a, f, phi1, phi2, phi0, lambda0, x0, y0, PHY_CALCULATION_PRECISION_DEPTH);
+    private GeographicalToFlatCoordinateTransformation transformation = new GeographicalToFlatCoordinateTransformation(a, f, phi1, phi2, phi0, lambda0, x0, y0, PHY_CALCULATION_PRECISION_DEPTH);
 
     /**
      *
