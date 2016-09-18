@@ -3,40 +3,25 @@ package com.eekhaut.kristof.coordinatetransform;
 import com.eekhaut.kristof.coordinatetransform.algorithm.GeographicalToFlatCoordinateTransformation;
 import com.eekhaut.kristof.coordinatetransform.algorithm.GeographicalToGeocentricCoordinateTransformation;
 import com.eekhaut.kristof.coordinatetransform.algorithm.SevenParameterTransformation;
+import com.eekhaut.kristof.coordinatetransform.parameters.coordinatesystem.ETRS89Parameters;
+import com.eekhaut.kristof.coordinatetransform.parameters.projectionsystem.Lambert72ProjectionParameters;
+import com.eekhaut.kristof.coordinatetransform.parameters.sevenparam.BD72ToETRS89TransformationParameters;
 
-import static com.eekhaut.kristof.coordinatetransform.util.DegreeUtils.degreesToRadians;
 import static java.lang.Math.toRadians;
 
 public class WGS84ToLambert72Transformer {
 
     private static final int PHY_CALCULATION_PRECISION_DEPTH = 10;
-    private static final double HEIGHT = 60D;  // Just providing an estimated avg hight
+    private static final double HEIGHT = 60D;  // Just providing an estimated avg height
 
-    private static final long a = 6378388L;
-    private static final double f = 1.0 / 297.0;
+    private Lambert72ProjectionParameters lambert72Parameters = new Lambert72ProjectionParameters();
+    private ETRS89Parameters etrs89Parameters = new ETRS89Parameters();
+    private BD72ToETRS89TransformationParameters sevenParameters = new BD72ToETRS89TransformationParameters();
 
-    private static final double phi0 = toRadians(90); // ϕ0
-    private static final double phi1 = degreesToRadians(49, 50, 0.00204); // ϕ1
-    private static final double phi2 = degreesToRadians(51, 10, 0.00204); // ϕ2
-
-    private static final double lambda0 = degreesToRadians(4, 22, 2.952); // λ0
-    private static final double x0 = 150000.013;
-    private static final double y0 = 5400088.438;
-
-    private static final double dx = 106.868628;
-    private static final double dy = -52.297783;
-    private static final double dz = 103.723893;
-
-    private static final double s = 0.0000012747;
-
-    private static final double rx = degreesToRadians(0, 0, 0.336570);
-    private static final double ry = degreesToRadians(0, 0, -0.456955);
-    private static final double rz = degreesToRadians(0, 0, 1.842183);
-
-    private GeographicalToGeocentricCoordinateTransformation wgs84GeocentricTransformation = new GeographicalToGeocentricCoordinateTransformation(6378137D, 1.0 / 298.257222101);
-    private SevenParameterTransformation sevenParameterTransformation = new SevenParameterTransformation(rx, ry, rz, s, dx, dy, dz);
-    private GeographicalToGeocentricCoordinateTransformation lambert72GeocentricTransformation = new GeographicalToGeocentricCoordinateTransformation(a, f);
-    private GeographicalToFlatCoordinateTransformation lambert72FlatTransformation = new GeographicalToFlatCoordinateTransformation(a, f, phi1, phi2, phi0, lambda0, x0, y0, PHY_CALCULATION_PRECISION_DEPTH);
+    private GeographicalToGeocentricCoordinateTransformation wgs84GeocentricTransformation = new GeographicalToGeocentricCoordinateTransformation(etrs89Parameters);
+    private SevenParameterTransformation sevenParameterTransformation = new SevenParameterTransformation(sevenParameters);
+    private GeographicalToGeocentricCoordinateTransformation lambert72GeocentricTransformation = new GeographicalToGeocentricCoordinateTransformation(lambert72Parameters);
+    private GeographicalToFlatCoordinateTransformation lambert72FlatTransformation = new GeographicalToFlatCoordinateTransformation(lambert72Parameters, PHY_CALCULATION_PRECISION_DEPTH);
 
     /**
      *

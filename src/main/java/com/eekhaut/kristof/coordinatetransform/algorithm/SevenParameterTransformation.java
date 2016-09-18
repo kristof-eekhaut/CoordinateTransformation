@@ -1,5 +1,7 @@
 package com.eekhaut.kristof.coordinatetransform.algorithm;
 
+import com.eekhaut.kristof.coordinatetransform.parameters.sevenparam.SevenParameterTransformationParameters;
+
 public class SevenParameterTransformation {
 
     private final double rx;  // ω(x)
@@ -12,16 +14,16 @@ public class SevenParameterTransformation {
     private final double dy;  // ∆(y)
     private final double dz;  // ∆(z)
 
-    public SevenParameterTransformation(double rx, double ry, double rz, double s, double dx, double dy, double dz) {
-        this.rx = rx;
-        this.ry = ry;
-        this.rz = rz;
+    public SevenParameterTransformation(SevenParameterTransformationParameters parameters) {
+        this.rx = parameters.getRx();
+        this.ry = parameters.getRy();
+        this.rz = parameters.getRz();
 
-        this.s = s;
+        this.s = parameters.getS();
 
-        this.dx = dx;
-        this.dy = dy;
-        this.dz = dz;
+        this.dx = parameters.getDx();
+        this.dy = parameters.getDy();
+        this.dz = parameters.getDz();
     }
 
     /**

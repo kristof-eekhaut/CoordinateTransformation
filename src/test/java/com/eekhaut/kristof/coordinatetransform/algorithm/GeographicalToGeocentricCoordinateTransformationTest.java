@@ -1,6 +1,7 @@
 package com.eekhaut.kristof.coordinatetransform.algorithm;
 
-import com.eekhaut.kristof.coordinatetransform.util.DegreeUtils;
+import com.eekhaut.kristof.coordinatetransform.parameters.coordinatesystem.GeodeticCoordinateSystemParameters;
+import com.eekhaut.kristof.coordinatetransform.parameters.projectionsystem.Lambert72ProjectionParameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -15,7 +16,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class GeographicalToGeocentricCoordinateTransformationTest {
 
-    private GeographicalToGeocentricCoordinateTransformation transformation = new GeographicalToGeocentricCoordinateTransformation(6378388D, 1.0 / 297.0);
+    private GeodeticCoordinateSystemParameters lambert72Parameters = new Lambert72ProjectionParameters();
+    private GeographicalToGeocentricCoordinateTransformation transformation = new GeographicalToGeocentricCoordinateTransformation(lambert72Parameters);
 
     private String description;
     private double latitude, longitude, h;

@@ -1,5 +1,7 @@
 package com.eekhaut.kristof.coordinatetransform.algorithm;
 
+import com.eekhaut.kristof.coordinatetransform.parameters.projectionsystem.ProjectionParameters;
+
 public class GeographicalToFlatCoordinateTransformation {
 
     private final double a;
@@ -19,25 +21,19 @@ public class GeographicalToFlatCoordinateTransformation {
     private double eSquared;
     private double e;
 
-    private double m1;
-    private double m2;
-    private double t1;
-    private double t2;
-    private double t0;
-
     private double n;
     private double g;
     private double r0;
 
-    public GeographicalToFlatCoordinateTransformation(double a, double f, double phi1, double phi2, double phi0, double lambda0, double x0, double y0, int phyCalculationPrecisionDepth) {
-        this.a = a;
-        this.f = f;
-        this.phi1 = phi1;
-        this.phi2 = phi2;
-        this.phi0 = phi0;
-        this.lambda0 = lambda0;
-        this.x0 = x0;
-        this.y0 = y0;
+    public GeographicalToFlatCoordinateTransformation(ProjectionParameters parameters, int phyCalculationPrecisionDepth) {
+        this.a = parameters.getA();
+        this.f = parameters.getF();
+        this.phi1 = parameters.getPhi1();
+        this.phi2 = parameters.getPhi2();
+        this.phi0 = parameters.getPhi0();
+        this.lambda0 = parameters.getLambda0();
+        this.x0 = parameters.getX0();
+        this.y0 = parameters.getY0();
 
         this.phyCalculationPrecisionDepth = phyCalculationPrecisionDepth;
 
@@ -48,11 +44,11 @@ public class GeographicalToFlatCoordinateTransformation {
         eSquared = 2.0 * f - Math.pow(f, 2);
         e = Math.sqrt(eSquared);
 
-        m1 = m(phi1);
-        m2 = m(phi2);
-        t1 = t(phi1);
-        t2 = t(phi2);
-        t0 = t(phi0);
+        double m1 = m(phi1);
+        double m2 = m(phi2);
+        double t1 = t(phi1);
+        double t2 = t(phi2);
+        double t0 = t(phi0);
 
         n = (Math.log(m1) - Math.log(m2)) / (Math.log(t1) - Math.log(t2));
         g = m1 / (n * Math.pow(t1, n));

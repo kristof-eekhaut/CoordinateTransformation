@@ -1,5 +1,7 @@
 package com.eekhaut.kristof.coordinatetransform.algorithm;
 
+import com.eekhaut.kristof.coordinatetransform.parameters.coordinatesystem.GeodeticCoordinateSystemParameters;
+
 public class GeographicalToGeocentricCoordinateTransformation {
 
     private final double a;
@@ -7,9 +9,9 @@ public class GeographicalToGeocentricCoordinateTransformation {
 
     private double eSquared;
 
-    public GeographicalToGeocentricCoordinateTransformation(double a, double f) {
-        this.a = a;
-        this.f = f;
+    public GeographicalToGeocentricCoordinateTransformation(GeodeticCoordinateSystemParameters parameters) {
+        this.a = parameters.getA();
+        this.f = parameters.getF();
 
         initCommonValues();
     }
