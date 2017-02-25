@@ -14,7 +14,7 @@ public class Lambert72ProjectionParameters extends BD72Parameters
     private static final double phi0 = toRadians(90); // ϕ0
     private static final double lambda0 = degreesToRadians(4, 22, 2.952); // λ0
     private static final double x0 = 150000.013;
-    private static final double y0 = 0;
+    private static final double y0 = 5400088.438;
 
     @Override
     public double getPhi1() {
